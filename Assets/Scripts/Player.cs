@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    Rigidbody rb;
-    bool jump = false;
+    Rigidbody rb;  
     Vector3 vec;
+    bool jump = false;
+    bool isGameOver = false;
+    float maxY = 12.19f;
+    float minY = -12.19f;
 
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
@@ -26,6 +29,15 @@ public class Player : MonoBehaviour
         {   
             jump = true;   
             Jump();
+        }
+        if (!isGameOver)
+        {
+            float playerY = transform.position.y;
+            if(playerY < minY || playerY > maxY)
+            {
+                isGameOver = false;
+                FindObjectOfType<UIHandler>().HandleGameOverScreen();
+            }
         }
     }
 
@@ -49,5 +61,9 @@ public class Player : MonoBehaviour
         vec.z = playerRig.position.z;
 
         playerRig.position = vec;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        FindObjectOfType<Score>().AddScore();
     }
 }

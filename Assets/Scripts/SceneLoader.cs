@@ -3,14 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+     void Start()
+    {
+        FindObjectOfType<UIHandler>().HandleMainMenu();
+    }
     public void StartGame()
     {
         FindObjectOfType<UIHandler>().HandleGameScreenUI();
     }
     public void ReloadGame()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(0);
+        FindObjectOfType<UIHandler>().HandleAfterReload();    
     }
     public void QuitGame()
     {

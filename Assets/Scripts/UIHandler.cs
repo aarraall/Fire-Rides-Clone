@@ -1,37 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIHandler : MonoBehaviour
 {
     [SerializeField] Canvas menuUI;
     [SerializeField] Canvas gameScreenUI;
     [SerializeField] Canvas gameOverScreenUI;
-    private void Start()
-    {
-        menuUI.enabled = false;
-        gameScreenUI.enabled = false;
-        gameOverScreenUI.enabled = false;
-        HandleMainMenu();
-    }
-    public void HandleGameOverScreen()
+
+    public void HandleMainMenu()
     {
         Time.timeScale = 0;
         gameScreenUI.enabled = false;
-        gameOverScreenUI.enabled = true;
+        gameOverScreenUI.enabled = false;
+        menuUI.enabled = true;
     }
     public void HandleGameScreenUI()
     {
         Time.timeScale = 1;
         gameScreenUI.enabled = true;
         menuUI.enabled = false;
+        gameOverScreenUI.enabled = false;
+    }
+    public void HandleGameOverScreen()
+    {
+        Time.timeScale = 0;
+        gameScreenUI.enabled = false;
+        gameOverScreenUI.enabled = true;
         
     }
-    private void HandleMainMenu()
+    public void HandleAfterReload()
     {
-        gameScreenUI.enabled = false;
+        FindObjectOfType<Player>().transform.position = new Vector3 (0,0,0);
+        FindObjectOfType<Rigidbody>().velocity = Vector3.zero;
+        menuUI.enabled = false;
         gameOverScreenUI.enabled = false;
-        menuUI.enabled = true;
-        Time.timeScale = 0;
+        gameScreenUI.enabled = true;
+        Time.timeScale = 1;
+        FindObjectOfType<Score>().ResetScore();
     }
 }
